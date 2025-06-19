@@ -1,0 +1,24 @@
+-- Create Table
+CREATE TABLE patient (
+  patient_id     NUMBER PRIMARY KEY,
+  first_name     VARCHAR2(100),
+  last_name      VARCHAR2(100),
+  date_of_birth  DATE,
+  gender         CHAR(1),
+  phone_number   VARCHAR2(15),
+  created_date   DATE DEFAULT SYSDATE
+);
+
+-- Insert Sample Data
+INSERT INTO patient (patient_id, first_name, last_name, date_of_birth, gender, phone_number)
+VALUES (1, 'John', 'Doe', TO_DATE('1990-01-15', 'YYYY-MM-DD'), 'M', '9876543210');
+
+-- Stored Procedure
+CREATE OR REPLACE PROCEDURE sp_get_patient_details (
+  p_patient_id IN patient.patient_id%TYPE
+) IS
+BEGIN
+  FOR rec IN (SELECT * FROM patient WHERE patient_id = p_patient_id) LOOP
+    DBMS_OUTPUT.PUT_LINE('Patient Name: ' || rec.first_name || ' ' || rec.last_name);
+  END LOOP;
+END;
